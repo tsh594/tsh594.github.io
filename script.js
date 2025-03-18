@@ -1,99 +1,11 @@
 class Chatbot {
-    constructor() {
-        this.faqs = [
-            { 
-                question: "What are your office hours?", 
-                answer: "Monday-Friday: 9AM - 5PM EST<br>Saturday: By appointment only" 
-            },
-            { 
-                question: "Do you offer free consultations?", 
-                answer: "We provide a 30-minute complimentary initial consultation" 
-            },
-            { 
-                question: "What payment methods do you accept?", 
-                answer: "We accept credit cards, checks, and wire transfers" 
-            },
-        ];
-        this.selectedQuestion = null;
-        this.isOpen = false;
-        this.init();
-    }
-
-    init() {
-        this.container = document.querySelector('.chatbot-container');
-        this.toggleBtn = document.querySelector('.chatbot-toggle');
-        
-        this.toggleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.toggleChatbot();
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!this.container.contains(e.target)) {
-                this.closeChatbot();
-            }
-        });
-
-        this.container.addEventListener('click', (e) => {
-            const questionBtn = e.target.closest('.question-btn');
-            if (questionBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.handleQuestionClick(parseInt(questionBtn.dataset.index));
-            }
-        });
-    }
-
-    toggleChatbot() {
-        this.isOpen = !this.isOpen;
-        this.container.classList.toggle('active', this.isOpen);
-        if (this.isOpen) this.renderChatbot();
-    }
-
-    closeChatbot() {
-        this.isOpen = false;
-        this.container.classList.remove('active');
-    }
-
-    handleQuestionClick(index) {
-        this.selectedQuestion = this.selectedQuestion === index ? null : index;
-        this.renderChatbot();
-    }
-
-    renderChatbot() {
-        this.container.innerHTML = `
-            <div class="chatbot-header">
-                <i class="fas fa-comments"></i>
-                <h4>Client Assistance</h4>
-            </div>
-            <div class="questions-list">
-                ${this.faqs.map((faq, i) => `
-                    <button type="button" 
-                        class="question-btn ${this.selectedQuestion === i ? 'active' : ''}" 
-                        data-index="${i}"
-                    >
-                        ${faq.question}
-                    </button>
-                `).join('')}
-            </div>
-            ${this.selectedQuestion !== null ? `
-                <div class="answer-box">
-                    ${this.faqs[this.selectedQuestion].answer}
-                </div>
-            ` : ''}
-        `;
-    }
-}
-
-class Chatbot {
     // Keep existing Chatbot implementation
     // ...
 }
 
 class FormManager {
     constructor() {
-        this.API_ENDPOINT = 'https://app.clio.com/inbox_leads.json';
+        this.API_ENDPOINT = 'https://cors-anywhere.herokuapp.com/https://app.clio.com/inbox_leads.json';
         this.API_KEY = 'YOUR_CLIO_API_KEY'; // REPLACE THIS
         this.init();
     }
@@ -199,7 +111,7 @@ class FormManager {
         const form = e.target;
         const errorContainer = form.querySelector('.error-messages');
         errorContainer.innerHTML = '';
-        
+
         try {
             // Validate form
             const validation = this.validateForm(form);
@@ -226,7 +138,7 @@ class FormManager {
                 from_source: form.from_source.value
             };
 
-            // Submit to Clio
+            // Submit to Clio via CORS proxy
             const response = await fetch(this.API_ENDPOINT, {
                 method: 'POST',
                 headers: {
@@ -237,15 +149,22 @@ class FormManager {
                 body: JSON.stringify(payload)
             });
 
+            // Handle response
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || `HTTP error ${response.status}`);
             }
 
+            // Show success message
             this.showSuccess();
             form.reset();
         } catch (error) {
-            errorContainer.innerHTML = `<div class="error-message">${error.message}</div>`;
+            console.error('Submission error:', error);
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    Submission failed: ${error.message}
+                </div>
+            `;
         }
     }
 
