@@ -1,12 +1,21 @@
 class Chatbot {
-    // Keep existing Chatbot implementation
-    // ...
+    constructor() {
+        this.chatbotToggle = document.querySelector('.chatbot-toggle');
+        this.chatbotContainer = document.querySelector('.chatbot-container');
+        this.init();
+    }
+
+    init() {
+        this.chatbotToggle.addEventListener('click', () => {
+            this.chatbotContainer.classList.toggle('active');
+        });
+    }
 }
 
 class FormManager {
     constructor() {
         this.API_ENDPOINT = 'https://cors-anywhere.herokuapp.com/https://app.clio.com/inbox_leads.json';
-        this.API_KEY = 'YOUR_CLIO_API_KEY'; // REPLACE THIS
+        this.API_KEY = 'YOUR_CLIO_API_KEY'; // Replace with your actual API key
         this.init();
     }
 
