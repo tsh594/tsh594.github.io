@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Required dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    
 </head>
 <body>
     <!-- Logo Section -->
@@ -103,20 +108,6 @@
                     <input type="hidden" id="referring_url" name="referring_url" value="https://hayslawva-test.me">
                     <input type="hidden" id="from_source" name="from_source" value="Hays Law Firm Website">
                     <input type="hidden" id="inbox_lead_token" name="inbox_lead_token" value="82d68da5d013ef36e1a8e76ec35d6fb6"> <!-- Replace with your token -->
-                
-                    <!-- Existing Form Fields -->
-                    <div class="form-header">
-                        <div class="letterhead-container">
-                            <div class="letterhead-section">
-                                <img src="./assets/Logo.JPG" style="width: 200px;">
-                            </div>
-                            <div class="letterhead-section text-right">
-                                <div class="letterhead-default-info">Law Office of Jon F. Hays PLLC</div>
-                                <div class="letterhead-default-info">40582 Sculpin Court<br>Aldie, VA 20105</div>
-                                <div class="letterhead-default-info">(571) 781-2460</div>
-                            </div>
-                        </div>
-                    </div>
                 
                     <!-- Contact Information -->
                     <div class="form-section">
@@ -336,22 +327,7 @@
         </button>
         <div class="chatbot-container"></div>
     </div>
-    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script> -->
+
     <script src="script.js"></script>
-    <!-- <script>
-        // Initialize Chosen select elements
-        $(".chosen-select").chosen();
-        
-        // Add dynamic field functionality
-        $('.add-email').click(function(e) {
-            e.preventDefault();
-            const newEmail = $(this).prev('.email-group').clone();
-            newEmail.find('input').val('');
-            newEmail.find('select').val('home').trigger('chosen:updated');
-            newEmail.insertBefore($(this));
-        });
-    </script> -->
 </body>
 </html>

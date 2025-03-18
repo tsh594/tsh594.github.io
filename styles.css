@@ -691,11 +691,32 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Dynamic Field Styling */
 .form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.form-row.primary-selected {
+  background: #f8f9fa;
+  border-left: 3px solid #2c3e50;
+  padding-left: 10px;
+}
+
+.add-email, .add-phone, .add-address {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.add-email:hover, .add-phone:hover, .add-address:hover {
+  text-decoration: underline;
+}
+
+.chosen-container {
+  width: 100% !important;
 }
 
 .form-group {
@@ -738,8 +759,23 @@ body {
   transform: translateY(-2px);
 }
 
+/* Add to styles.css */
+.primary-selected {
+  background: #f8f9fa;
+  border-left: 3px solid #2c3e50;
+  padding-left: 10px;
+  transition: all 0.3s ease;
+}
+
 .error-message {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
+  color: #dc3545;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.chosen-container {
+  width: 100% !important;
 }

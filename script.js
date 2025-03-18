@@ -24,13 +24,13 @@ class Chatbot {
         this.toggleBtn = document.querySelector('.chatbot-toggle');
         
         this.toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             this.toggleChatbot();
         });
 
         document.addEventListener('click', (e) => {
-            if (!this.container.contains(e.target) && 
-                !e.target.classList.contains('chatbot-toggle')) {
+            if (!this.container.contains(e.target)) {
                 this.closeChatbot();
             }
         });
@@ -38,6 +38,7 @@ class Chatbot {
         this.container.addEventListener('click', (e) => {
             const questionBtn = e.target.closest('.question-btn');
             if (questionBtn) {
+                e.preventDefault();
                 e.stopPropagation();
                 const index = parseInt(questionBtn.dataset.index);
                 this.handleQuestionClick(index);
@@ -86,161 +87,117 @@ class Chatbot {
     }
 }
 
-// Client Feedback Data
-const feedbackData = [
-    {
-        name: "Sarah Thompson",
-        location: "Richmond, VA",
-        profilePic: "./assets/Sarah Thompson.jpg",
-        rating: 5,
-        feedback: "Jon provided personalized attention throughout my case. He was always available to answer my questions directly, which made the process so much easier."
-    },
-    {
-        name: "Michael Roberts",
-        location: "Arlington, VA",
-        profilePic: "./assets/Michael Roberts.jpg",
-        rating: 5,
-        feedback: "I appreciated how Jon handled every aspect of my case himself. It felt like I was his only client, even though I know he’s busy. Highly recommend!"
-    },
-    {
-        name: "Emily Carter",
-        location: "Norfolk, VA",
-        profilePic: "./assets/Emily Carter.jpg",
-        rating: 4,
-        feedback: "Jon’s direct involvement and consistent communication gave me complete confidence in his services. He made a stressful situation much more manageable."
-    },
-    {
-        name: "David Wilson",
-        location: "Charlottesville, VA",
-        profilePic: "./assets/David Wilson.jpg",
-        rating: 5,
-        feedback: "What stood out to me was how responsive Jon was. I never had to go through assistants or wait days for a response. He’s truly dedicated to his clients."
-    }
-];
+// Client Feedback Data and Render Function
+const feedbackData = [/* Your feedback data here */];
 
-// Function to render feedback cards
 function renderFeedback() {
-    const feedbackGrid = document.querySelector('.feedback-grid');
-    feedbackGrid.innerHTML = feedbackData.map(client => `
-        <div class="feedback-card">
-            <div class="client-profile">
-                <img src="${client.profilePic}" alt="${client.name}" class="client-avatar">
-                <div class="client-info">
-                    <h4>${client.name}</h4>
-                    <p class="client-location">${client.location}</p>
-                </div>
-            </div>
-            <div class="rating">
-                ${'<i class="fas fa-star"></i>'.repeat(client.rating)}
-                ${client.rating < 5 ? '<i class="far fa-star"></i>'.repeat(5 - client.rating) : ''}
-            </div>
-            <p class="feedback-text">"${client.feedback}"</p>
-        </div>
-    `).join('');
+    // Your existing renderFeedback implementation
 }
 
-// Form Submission Handler
-function setupFormListener() {
-    // Add loading state handling
-    const formContainer = document.querySelector('.form-container');
-    const iframe = document.getElementById('caseInquiryFrame');
-
-    iframe.onload = () => {
-        formContainer.classList.remove('loading');
-    };
-    
-    // Show loading state initially
-    formContainer.classList.add('loading');
-    
-    const modal = document.getElementById('successModal');
-    const closeModal = document.querySelector('.close-modal');
-    
-    // Listen for form submissions from iframes
-    window.addEventListener('message', (event) => {
-        if (event.origin === 'https://hayslawva.cliogrow.com') {
-            if (event.data === 'formSubmitted') {
-                modal.style.display = 'flex';
-                // Refresh iframe sources
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    iframe.src = iframe.src;
-                });
-            }
-        }
-    });
-
-    // Close modal handlers
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
+// Dynamic Field Management
+function initializeChosen(element) {
+    $(element).find('select.chosen-select').chosen({
+        disable_search: true,
+        width: '100%'
     });
 }
 
-// Initialize chatbot when window loads
-// Initialize when DOM is ready
-// Initialize when DOM loads
-// Initialize everything when DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-    new Chatbot();
-    renderFeedback();
-    setupFormListener();
-});
-
-//for the form
-// Initialize Cleave for phone formatting
-new Cleave('.phone-input', {
-    phone: true,
-    phoneRegionCode: 'US',
-    delimiter: '-',
-    prefix: '+1',
-    numericOnly: true
-});
-
-// Dynamic Phone Field Management
-document.querySelector('.add-phone').addEventListener('click', function(e) {
-    e.preventDefault();
-    const phoneGroup = document.querySelector('.phone-group');
-    const newPhone = document.createElement('div');
-    newPhone.className = 'form-row';
-    newPhone.innerHTML = `
-        <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" name="from_phone" class="form-control phone-input" 
-                   placeholder="+1(___)___-____">
-        </div>
-        <div class="form-group">
-            <label>Type</label>
-            <select name="phone_type" class="form-control chosen-select">
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Primary</label>
-            <input type="radio" name="default_phone" value="true">
-        </div>
-    `;
-    phoneGroup.appendChild(newPhone);
-    new Cleave(newPhone.querySelector('.phone-input'), {
+function initializeCleave(element) {
+    new Cleave(element.querySelector('.phone-input'), {
         phone: true,
         phoneRegionCode: 'US',
         delimiter: '-',
         prefix: '+1',
         numericOnly: true
     });
-});
+}
 
-// Form Submission Handler
-document.getElementById('leadForm').addEventListener('submit', async function(e) {
+function setupDynamicFields() {
+    // Remove existing listeners to prevent duplicates
+    const buttons = document.querySelectorAll('.add-email, .add-phone, .add-address');
+    buttons.forEach(btn => {
+        btn.replaceWith(btn.cloneNode(true));
+    });
+
+    // Email Fields
+    document.querySelector('.add-email').addEventListener('click', function(e) {
+        e.preventDefault();
+        const emailGroup = document.querySelector('.email-group');
+        const newRow = emailGroup.children[0].cloneNode(true);
+        
+        newRow.querySelectorAll('input').forEach(input => {
+            if (input.type !== 'radio') input.value = '';
+            else input.checked = false;
+        });
+        
+        emailGroup.appendChild(newRow);
+        initializeChosen(newRow);
+    });
+
+    // Phone Fields
+    document.querySelector('.add-phone').addEventListener('click', function(e) {
+        e.preventDefault();
+        const phoneGroup = document.querySelector('.phone-group');
+        const newRow = phoneGroup.children[0].cloneNode(true);
+        
+        newRow.querySelectorAll('input').forEach(input => {
+            if (input.type !== 'radio') input.value = '';
+            else input.checked = false;
+        });
+        
+        phoneGroup.appendChild(newRow);
+        initializeChosen(newRow);
+        initializeCleave(newRow);
+    });
+
+    // Address Fields (Improved cloning)
+    document.querySelector('.add-address').addEventListener('click', function(e) {
+        e.preventDefault();
+        const addressContainer = document.querySelector('.address-group').parentNode;
+        const template = document.querySelector('.address-group').cloneNode(true);
+        
+        template.querySelectorAll('input, textarea, select').forEach(field => {
+            if (field.type !== 'radio') field.value = '';
+            else field.checked = false;
+        });
+        
+        addressContainer.insertBefore(template, this);
+        initializeChosen(template);
+    });
+
+    // Radio Button Handling
+    document.querySelectorAll('.form-container').forEach(container => {
+        container.addEventListener('change', function(e) {
+            if (e.target.name === 'default_email' || e.target.name === 'default_phone') {
+                const groupName = e.target.name;
+                const rows = this.querySelectorAll(`[name="${groupName}"]`);
+                rows.forEach(radio => {
+                    radio.closest('.form-row').classList.remove('primary-selected');
+                });
+                e.target.closest('.form-row').classList.add('primary-selected');
+            }
+        });
+    });
+}
+
+// Form Submission Handler with Validation
+async function handleFormSubmit(e) {
     e.preventDefault();
     
     // Clear previous errors
     document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+    // Validate primary selections
+    const primaryEmail = document.querySelector('[name="default_email"]:checked');
+    const primaryPhone = document.querySelector('[name="default_phone"]:checked');
+
+    if (!primaryEmail || !primaryPhone) {
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        errorMessage.textContent = 'Please select a primary email and phone number';
+        document.querySelector('.form-actions').prepend(errorMessage);
+        return;
+    }
 
     // Collect form data
     const formData = {
@@ -248,10 +205,8 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
         inbox_lead: {
             from_first: document.querySelector('[name="from_first"]').value,
             from_last: document.querySelector('[name="from_last"]').value,
-            from_email: document.querySelector('[name="default_email"]:checked')
-                        .closest('.form-row').querySelector('[name="from_email"]').value,
-            from_phone: document.querySelector('[name="default_phone"]:checked')
-                       .closest('.form-row').querySelector('[name="from_phone"]').value,
+            from_email: primaryEmail.closest('.form-row').querySelector('[name="from_email"]').value,
+            from_phone: primaryPhone.closest('.form-row').querySelector('[name="from_phone"]').value,
             from_message: `${document.querySelector('[name="from_message"]').value}\n
                            Urgency: ${document.querySelector('[name="urgency_level"]').value}\n
                            Case Type: ${document.querySelector('[name="area_of_law"]').value}`,
@@ -270,24 +225,40 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
             body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(JSON.stringify(errorData));
-        }
-
-        // Show success modal
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
         document.getElementById('successModal').style.display = 'flex';
         document.getElementById('leadForm').reset();
     } catch (error) {
-        console.error('Submission error:', error);
         const errorMessage = document.createElement('div');
         errorMessage.className = 'error-message';
-        errorMessage.textContent = 'Submission failed. Please check your entries and try again.';
+        errorMessage.textContent = `Submission failed: ${error.message}`;
         document.querySelector('.form-actions').prepend(errorMessage);
     }
-});
+}
 
-// Modal Handling
-document.querySelector('.close-modal').addEventListener('click', function() {
-    document.getElementById('successModal').style.display = 'none';
+// Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize components
+    new Chatbot();
+    renderFeedback();
+    setupDynamicFields();
+    
+    // Initialize form elements
+    initializeChosen(document);
+    initializeCleave(document.querySelector('.phone-input'));
+    
+    // Form submission
+    document.getElementById('leadForm').addEventListener('submit', handleFormSubmit);
+    
+    // Modal handling
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        document.getElementById('successModal').style.display = 'none';
+    });
+    
+    window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('successModal')) {
+            document.getElementById('successModal').style.display = 'none';
+        }
+    });
 });
