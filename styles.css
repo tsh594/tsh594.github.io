@@ -30,7 +30,7 @@ body {
   align-items: center;
   gap: 15px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 15px 25px; /* Increased padding for a larger logo */
+  padding: 15px 25px;
   border-radius: 50px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
@@ -43,10 +43,10 @@ body {
 }
 
 .logo {
-  width: 120px; /* Increased logo size */
-  height: 120px; /* Increased logo size */
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  object-fit: contain; /* Ensures the full logo is visible */
+  object-fit: contain;
   border: 2px solid var(--gold);
   animation: float 3s ease-in-out infinite;
 }
@@ -59,14 +59,14 @@ body {
 
 .logo-name {
   font-family: 'Playfair Display', serif;
-  font-size: 1.8rem; /* Slightly larger text to match the bigger logo */
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--navy);
   line-height: 1.2;
 }
 
 .logo-tagline {
-  font-size: 1rem; /* Slightly larger text to match the bigger logo */
+  font-size: 1rem;
   color: var(--gray);
   font-weight: 500;
 }
@@ -89,35 +89,35 @@ body {
   }
 
   .logo-container {
-      padding: 10px 20px; /* Adjusted padding for smaller screens */
+      padding: 10px 20px;
   }
 
   .logo {
-      width: 80px; /* Adjusted for smaller screens */
-      height: 80px; /* Adjusted for smaller screens */
+      width: 80px;
+      height: 80px;
   }
 
   .logo-name {
-      font-size: 1.4rem; /* Adjusted for smaller screens */
+      font-size: 1.4rem;
   }
 
   .logo-tagline {
-      font-size: 0.9rem; /* Adjusted for smaller screens */
+      font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-      width: 60px; /* Adjusted for very small screens */
-      height: 60px; /* Adjusted for very small screens */
+      width: 60px;
+      height: 60px;
   }
 
   .logo-name {
-      font-size: 1.2rem; /* Adjusted for very small screens */
+      font-size: 1.2rem;
   }
 
   .logo-tagline {
-      font-size: 0.8rem; /* Adjusted for very small screens */
+      font-size: 0.8rem;
   }
 }
 
@@ -134,7 +134,7 @@ body {
   padding: 2rem;
   position: relative;
   overflow: hidden;
-  margin-top: 140px; /* Increased margin to prevent overlap with the larger logo */
+  margin-top: 140px;
 }
 
 .hero::before {
@@ -161,23 +161,23 @@ body {
   font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 1.2px;
-  color: rgba(255, 255, 255, 0.95); /* Soft white with slight transparency */
+  color: rgba(255, 255, 255, 0.95);
   display: inline-block;
   padding: 0.8rem 1.8rem;
-  background: rgba(68, 90, 112, 0.65); /* Deeper version of hero overlay color */
+  background: rgba(68, 90, 112, 0.65);
   border-radius: 25px;
-  backdrop-filter: blur(6px); /* Increased blur for depth */
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Enhanced text shadow */
+  backdrop-filter: blur(6px);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
   margin-top: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.25);
   animation: fadeInUp 1s ease-out 0.5s;
   animation-fill-mode: both;
-  transition: all 0.3s ease; /* Smooth transitions */
+  transition: all 0.3s ease;
 }
 
 .tagline:hover {
-  background: rgba(68, 90, 112, 0.8); /* Slightly more opaque on hover */
-  transform: translateY(-2px); /* Gentle lift effect */
+  background: rgba(68, 90, 112, 0.8);
+  transform: translateY(-2px);
 }
 
 /* Animations */
@@ -331,7 +331,7 @@ body {
   transition: all 0.3s ease;
   visibility: hidden;
   z-index: 1001;
-  pointer-events: auto; /* Add this line */
+  pointer-events: auto;
 }
 
 .chatbot-container.active {
@@ -677,12 +677,7 @@ body {
   cursor: pointer;
 }
 
-
-
-
-
-/*COntact Form*/
-/* Updated Form Styles Using Your Variables */
+/* Form Section */
 .form-section {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
@@ -759,14 +754,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Add to styles.css */
-.primary-selected {
-  background: #f8f9fa;
-  border-left: 3px solid #2c3e50;
-  padding-left: 10px;
-  transition: all 0.3s ease;
-}
-
+/* Error Messages */
 .error-message {
   color: #dc3545;
   padding: 10px;
@@ -776,11 +764,7 @@ body {
   width: 100%;
 }
 
-.chosen-container {
-  width: 100% !important;
-}
-
-/* Shows when JS fails to load */
+/* No-JS Warning */
 .no-js-warning {
   display: none;
   background: #ff0000;
