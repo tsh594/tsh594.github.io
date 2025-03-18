@@ -1,3 +1,4 @@
+// Chatbot class with CSP-safe event handlers
 class Chatbot {
     constructor() {
         this.faqs = [
@@ -23,32 +24,34 @@ class Chatbot {
         this.container = document.querySelector('.chatbot-container');
         this.toggleBtn = document.querySelector('.chatbot-toggle');
         
+        // Use passive event listener for better performance
         this.toggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             this.toggleChatbot();
-        });
+        }, { passive: false });
 
-        document.addEventListener('click', (e) => {
-            if (!this.container.contains(e.target)) {
+        // Delegate document click handler
+        document.body.addEventListener('click', (e) => {
+            if (this.isOpen && !this.container.contains(e.target)) {
                 this.closeChatbot();
             }
-        });
+        }, { passive: true });
 
+        // Delegate question clicks
         this.container.addEventListener('click', (e) => {
             const questionBtn = e.target.closest('.question-btn');
             if (questionBtn) {
                 e.preventDefault();
                 e.stopPropagation();
-                const index = parseInt(questionBtn.dataset.index);
-                this.handleQuestionClick(index);
+                this.handleQuestionClick(parseInt(questionBtn.dataset.index));
             }
-        });
+        }, { passive: false });
     }
 
     toggleChatbot() {
         this.isOpen = !this.isOpen;
-        this.container.classList.toggle('active');
+        this.container.classList.toggle('active', this.isOpen);
         if (this.isOpen) this.renderChatbot();
     }
 
@@ -71,6 +74,7 @@ class Chatbot {
             <div class="questions-list">
                 ${this.faqs.map((faq, i) => `
                     <button 
+                        type="button"
                         class="question-btn ${this.selectedQuestion === i ? 'active' : ''}" 
                         data-index="${i}"
                     >
@@ -87,71 +91,87 @@ class Chatbot {
     }
 }
 
-// Client Feedback Data and Render Function
-const feedbackData = [/* Your feedback data here */];
+// Dynamic Field Manager with server-safe cloning
+class FormManager {
+    constructor() {
+        this.initializeChosen = this.initializeChosen.bind(this);
+        this.initializeCleave = this.initializeCleave.bind(this);
+        this.init();
+    }
 
-function renderFeedback() {
-    // Your existing renderFeedback implementation
-}
+    init() {
+        this.setupDynamicFields();
+        this.setupValidation();
+        this.initializeChosen(document);
+        this.initializeCleave(document.querySelector('.phone-input'));
+    }
 
-// Dynamic Field Management
-function initializeChosen(element) {
-    $(element).find('select.chosen-select').chosen({
-        disable_search: true,
-        width: '100%'
-    });
-}
+    initializeChosen(container) {
+        $(container).find('select.chosen-select').chosen({
+            disable_search: true,
+            width: '100%',
+            allow_single_deselect: true
+        });
+    }
 
-function initializeCleave(element) {
-    new Cleave(element.querySelector('.phone-input'), {
-        phone: true,
-        phoneRegionCode: 'US',
-        delimiter: '-',
-        prefix: '+1',
-        numericOnly: true
-    });
-}
+    initializeCleave(input) {
+        if (input) {
+            new Cleave(input, {
+                phone: true,
+                phoneRegionCode: 'US',
+                delimiter: '-',
+                prefix: '+1',
+                numericOnly: true
+            });
+        }
+    }
 
-function setupDynamicFields() {
-    // Remove existing listeners to prevent duplicates
-    const buttons = document.querySelectorAll('.add-email, .add-phone, .add-address');
-    buttons.forEach(btn => {
-        btn.replaceWith(btn.cloneNode(true));
-    });
+    setupDynamicFields() {
+        // Event delegation for dynamic buttons
+        document.body.addEventListener('click', (e) => {
+            if (e.target.matches('.add-email')) this.handleAddEmail(e);
+            if (e.target.matches('.add-phone')) this.handleAddPhone(e);
+            if (e.target.matches('.add-address')) this.handleAddAddress(e);
+        });
 
-    // Email Fields
-    document.querySelector('.add-email').addEventListener('click', function(e) {
+        // Radio button state management
+        document.body.addEventListener('change', (e) => {
+            if (e.target.name === 'default_email' || e.target.name === 'default_phone') {
+                this.updatePrimaryState(e.target);
+            }
+        });
+    }
+
+    handleAddEmail(e) {
         e.preventDefault();
         const emailGroup = document.querySelector('.email-group');
-        const newRow = emailGroup.children[0].cloneNode(true);
+        const template = emailGroup.firstElementChild.cloneNode(true);
         
-        newRow.querySelectorAll('input').forEach(input => {
-            if (input.type !== 'radio') input.value = '';
-            else input.checked = false;
+        template.querySelectorAll('input').forEach(input => {
+            if (input.type === 'email') input.value = '';
+            if (input.type === 'radio') input.checked = false;
         });
         
-        emailGroup.appendChild(newRow);
-        initializeChosen(newRow);
-    });
+        emailGroup.appendChild(template);
+        this.initializeChosen(template);
+    }
 
-    // Phone Fields
-    document.querySelector('.add-phone').addEventListener('click', function(e) {
+    handleAddPhone(e) {
         e.preventDefault();
         const phoneGroup = document.querySelector('.phone-group');
-        const newRow = phoneGroup.children[0].cloneNode(true);
+        const template = phoneGroup.firstElementChild.cloneNode(true);
         
-        newRow.querySelectorAll('input').forEach(input => {
-            if (input.type !== 'radio') input.value = '';
-            else input.checked = false;
+        template.querySelectorAll('input').forEach(input => {
+            if (input.type === 'tel') input.value = '';
+            if (input.type === 'radio') input.checked = false;
         });
         
-        phoneGroup.appendChild(newRow);
-        initializeChosen(newRow);
-        initializeCleave(newRow);
-    });
+        phoneGroup.appendChild(template);
+        this.initializeChosen(template);
+        this.initializeCleave(template.querySelector('.phone-input'));
+    }
 
-    // Address Fields (Improved cloning)
-    document.querySelector('.add-address').addEventListener('click', function(e) {
+    handleAddAddress(e) {
         e.preventDefault();
         const addressContainer = document.querySelector('.address-group').parentNode;
         const template = document.querySelector('.address-group').cloneNode(true);
@@ -161,104 +181,97 @@ function setupDynamicFields() {
             else field.checked = false;
         });
         
-        addressContainer.insertBefore(template, this);
-        initializeChosen(template);
-    });
-
-    // Radio Button Handling
-    document.querySelectorAll('.form-container').forEach(container => {
-        container.addEventListener('change', function(e) {
-            if (e.target.name === 'default_email' || e.target.name === 'default_phone') {
-                const groupName = e.target.name;
-                const rows = this.querySelectorAll(`[name="${groupName}"]`);
-                rows.forEach(radio => {
-                    radio.closest('.form-row').classList.remove('primary-selected');
-                });
-                e.target.closest('.form-row').classList.add('primary-selected');
-            }
-        });
-    });
-}
-
-// Form Submission Handler with Validation
-async function handleFormSubmit(e) {
-    e.preventDefault();
-    
-    // Clear previous errors
-    document.querySelectorAll('.error-message').forEach(el => el.remove());
-
-    // Validate primary selections
-    const primaryEmail = document.querySelector('[name="default_email"]:checked');
-    const primaryPhone = document.querySelector('[name="default_phone"]:checked');
-
-    if (!primaryEmail || !primaryPhone) {
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.textContent = 'Please select a primary email and phone number';
-        document.querySelector('.form-actions').prepend(errorMessage);
-        return;
+        addressContainer.insertBefore(template, e.target);
+        this.initializeChosen(template);
     }
 
-    // Collect form data
-    const formData = {
-        inbox_lead_token: document.getElementById('inbox_lead_token').value,
-        inbox_lead: {
-            from_first: document.querySelector('[name="from_first"]').value,
-            from_last: document.querySelector('[name="from_last"]').value,
-            from_email: primaryEmail.closest('.form-row').querySelector('[name="from_email"]').value,
-            from_phone: primaryPhone.closest('.form-row').querySelector('[name="from_phone"]').value,
-            from_message: `${document.querySelector('[name="from_message"]').value}\n
-                           Urgency: ${document.querySelector('[name="urgency_level"]').value}\n
-                           Case Type: ${document.querySelector('[name="area_of_law"]').value}`,
-            referring_url: document.getElementById('referring_url').value,
-            from_source: document.getElementById('from_source').value
-        }
-    };
-
-    try {
-        const response = await fetch('https://grow.clio.com/inbox_leads', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    updatePrimaryState(radio) {
+        const groupName = radio.name;
+        const container = radio.closest('.form-container');
         
-        document.getElementById('successModal').style.display = 'flex';
-        document.getElementById('leadForm').reset();
-    } catch (error) {
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.textContent = `Submission failed: ${error.message}`;
-        document.querySelector('.form-actions').prepend(errorMessage);
+        container.querySelectorAll(`[name="${groupName}"]`).forEach(r => {
+            r.closest('.form-row').classList.remove('primary-selected');
+        });
+        
+        radio.closest('.form-row').classList.add('primary-selected');
+    }
+
+    setupValidation() {
+        document.getElementById('leadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            this.handleFormSubmit(e);
+        });
+    }
+
+    async handleFormSubmit(e) {
+        const form = e.target;
+        const errorContainer = form.querySelector('.error-messages');
+        errorContainer.innerHTML = '';
+        
+        // Validate required fields
+        const errors = [];
+        if (!form.querySelector('[name="default_email"]:checked')) {
+            errors.push('Please select a primary email');
+        }
+        if (!form.querySelector('[name="default_phone"]:checked')) {
+            errors.push('Please select a primary phone number');
+        }
+
+        if (errors.length > 0) {
+            errorContainer.innerHTML = errors.map(msg => `
+                <div class="error-message">${msg}</div>
+            `).join('');
+            return;
+        }
+
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action || 'https://grow.clio.com/inbox_leads', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            document.getElementById('successModal').style.display = 'flex';
+            form.reset();
+        } catch (error) {
+            errorContainer.innerHTML = `
+                <div class="error-message">Submission failed: ${error.message}</div>
+            `;
+        }
     }
 }
 
-// Initialization
+// Main initialization
 document.addEventListener('DOMContentLoaded', () => {
+    // Remove no-js class
+    document.body.classList.remove('no-js');
+
     // Initialize components
     new Chatbot();
-    renderFeedback();
-    setupDynamicFields();
-    
-    // Initialize form elements
-    initializeChosen(document);
-    initializeCleave(document.querySelector('.phone-input'));
-    
-    // Form submission
-    document.getElementById('leadForm').addEventListener('submit', handleFormSubmit);
-    
+    new FormManager();
+
     // Modal handling
+    const modal = document.getElementById('successModal');
     document.querySelector('.close-modal').addEventListener('click', () => {
-        document.getElementById('successModal').style.display = 'none';
+        modal.style.display = 'none';
     });
     
     window.addEventListener('click', (e) => {
-        if (e.target === document.getElementById('successModal')) {
-            document.getElementById('successModal').style.display = 'none';
+        if (e.target === modal) {
+            modal.style.display = 'none';
         }
+    });
+
+    // Debugging checks
+    console.log('Dependencies loaded:', {
+        jQuery: !!window.jQuery,
+        Chosen: !!window.jQuery.fn.chosen,
+        Cleave: !!window.Cleave
     });
 });

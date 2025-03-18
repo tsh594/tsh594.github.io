@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hayslawva.cliogrow.com; img-src 'self' https://your-image-domain.com;">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://code.jquery.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+        style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+        img-src 'self' data:;
+        connect-src 'self' https://grow.clio.com;
+        frame-src https://hayslawva.cliogrow.com;
+    ">
     <title>Jon F. Hays Law Firm</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Required dependencies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
-    
 </head>
-<body>
+<body class="no-js">
+    <div class="no-js-warning">
+        JavaScript is required to use this website. Please enable JavaScript in your browser.
+    </div>
+
     <!-- Logo Section -->
     <header class="logo-header">
         <div class="logo-container">
@@ -39,21 +44,16 @@
     <section class="services">
         <h2>Practice Areas</h2>
         <div class="services-grid">
-            <!-- Estate Planning -->
             <div class="service-card">
                 <div class="service-icon">📜</div>
                 <h3>Estate Planning</h3>
                 <p>Wills, trusts, and probate administration</p>
             </div>
-
-            <!-- Family Law -->
             <div class="service-card">
                 <div class="service-icon">👨👩👧</div>
                 <h3>Family Law</h3>
                 <p>Divorce, child custody, and support matters</p>
             </div>
-
-            <!-- Simple Criminal Law -->
             <div class="service-card">
                 <div class="service-icon">🚔</div>
                 <h3>Simple Criminal Law</h3>
@@ -65,9 +65,7 @@
     <!-- Client Feedback Section -->
     <section class="client-feedback">
         <h2>What Our Clients Say</h2>
-        <div class="feedback-grid">
-            <!-- Injected by JS -->
-        </div>
+        <div class="feedback-grid"><!-- JS injected --></div>
     </section>
 
     <!-- Case Inquiry Section -->
@@ -76,7 +74,6 @@
         <div class="inquiry-content">
             <div class="inquiry-info">
                 <h3>Confidential Case Review</h3>
-                <p>Use this secure form to:</p>
                 <ul class="inquiry-benefits">
                     <li><i class="fas fa-check-circle"></i> Submit case details privately</li>
                     <li><i class="fas fa-check-circle"></i> Ask preliminary questions</li>
@@ -102,13 +99,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Form Section -->
             <div class="form-container">
                 <form class="simple_form new_intake_form" id="leadForm">
-                    <!-- Hidden Fields for Clio Grow API -->
+                    <div class="error-messages"></div>
                     <input type="hidden" id="referring_url" name="referring_url" value="https://hayslawva-test.me">
                     <input type="hidden" id="from_source" name="from_source" value="Hays Law Firm Website">
-                    <input type="hidden" id="inbox_lead_token" name="inbox_lead_token" value="82d68da5d013ef36e1a8e76ec35d6fb6"> <!-- Replace with your token -->
-                
+                    <input type="hidden" id="inbox_lead_token" name="inbox_lead_token" value="82d68da5d013ef36e1a8e76ec35d6fb6">
+
                     <!-- Contact Information -->
                     <div class="form-section">
                         <h3>Contact Information</h3>
@@ -131,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     <!-- Email Section -->
                     <div class="form-section">
                         <h3>Emails</h3>
@@ -155,9 +154,9 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="add-email">Add Email +</a>
+                        <button type="button" class="add-email">Add Email +</button>
                     </div>
-                
+
                     <!-- Address Section -->
                     <div class="form-section">
                         <h3>Address</h3>
@@ -173,7 +172,6 @@
                                     <label>Country</label>
                                     <select name="country" class="form-control chosen-select">
                                         <option value="US">United States</option>
-                                        <!-- Other country options -->
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -184,7 +182,6 @@
                                     <label>State</label>
                                     <select name="state" class="form-control chosen-select">
                                         <option value="VA">Virginia</option>
-                                        <!-- Other state options -->
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -193,7 +190,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="add-address">Add Address +</a>
+                        <button type="button" class="add-address">Add Address +</button>
                     </div>
 
                     <!-- Phone Numbers Section -->
@@ -203,11 +200,7 @@
                             <div class="form-row">
                                 <div class="form-group required">
                                     <label>Phone Number *</label>
-                                    <input type="tel" name="from_phone" class="form-control phone-input" 
-                                        placeholder="+1(___)___-____" 
-                                        pattern="\+1\(\d{3}\)\d{3}-\d{4}" 
-                                        title="Please use format: +1(XXX)XXX-XXXX" 
-                                        required>
+                                    <input type="tel" name="from_phone" class="form-control phone-input" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Type</label>
@@ -223,9 +216,9 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="add-phone">Add Phone Number +</a>
+                        <button type="button" class="add-phone">Add Phone Number +</button>
                     </div>
-                
+
                     <!-- Case Details -->
                     <div class="form-section">
                         <h3>Case Details</h3>
@@ -259,11 +252,11 @@
                             </select>
                         </div>
                     </div>
-                
+
                     <!-- Submission Buttons -->
                     <div class="form-actions">
-                        <button type="submit" name="submitted" class="lex-button lex-button-blue">Submit</button>
-                        <button type="button" name="save_progress" class="lex-button lex-button-gray">Save Progress</button>
+                        <button type="submit" class="lex-button lex-button-blue">Submit</button>
+                        <button type="button" class="lex-button lex-button-gray">Save Progress</button>
                     </div>
                 </form>
             </div>
@@ -328,6 +321,10 @@
         <div class="chatbot-container"></div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
