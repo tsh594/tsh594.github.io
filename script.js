@@ -86,6 +86,11 @@ class Chatbot {
     }
 }
 
+class Chatbot {
+    // Keep existing Chatbot implementation
+    // ...
+}
+
 class FormManager {
     constructor() {
         this.API_ENDPOINT = 'https://app.clio.com/inbox_leads.json';
@@ -157,6 +162,7 @@ class FormManager {
         const selectElement = template.querySelector('select.chosen-select');
         if (selectElement) {
             selectElement.classList.remove('chosen-select'); // Remove the Chosen class
+            selectElement.style.display = 'block'; // Ensure the original select is visible
         }
 
         // Add the new row to the group
