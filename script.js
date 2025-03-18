@@ -147,10 +147,16 @@ class FormManager {
             if (field.type === 'radio') field.checked = false; // Uncheck radios
         });
 
-        // Remove Chosen's duplicate dropdown
+        // Remove Chosen's duplicate dropdown (if it exists)
         const chosenContainer = template.querySelector('.chosen-container');
         if (chosenContainer) {
             chosenContainer.remove(); // Remove the duplicate Chosen dropdown
+        }
+
+        // Remove the Chosen class from the select element
+        const selectElement = template.querySelector('select.chosen-select');
+        if (selectElement) {
+            selectElement.classList.remove('chosen-select'); // Remove the Chosen class
         }
 
         // Add the new row to the group
@@ -158,7 +164,7 @@ class FormManager {
 
         // Reinitialize Chosen for the new select element
         if (type === 'email' || type === 'phone' || type === 'address') {
-            $(template).find('select.chosen-select').chosen({
+            $(template).find('select').chosen({
                 disable_search: true,
                 width: '100%'
             });
