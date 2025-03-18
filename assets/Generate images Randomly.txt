@@ -1,0 +1,6 @@
+For any image:
+https://picsum.photos/80/80?random=1
+
+
+For Avatars:
+https://i.pravatar.cc/80?img=1

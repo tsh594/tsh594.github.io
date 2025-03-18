@@ -91,28 +91,28 @@ const feedbackData = [
     {
         name: "Sarah Thompson",
         location: "Richmond, VA",
-        profilePic: "https://i.pravatar.cc/80?img=1",
+        profilePic: "./assets/Sarah Thompson.jpg",
         rating: 5,
         feedback: "Jon provided personalized attention throughout my case. He was always available to answer my questions directly, which made the process so much easier."
     },
     {
         name: "Michael Roberts",
         location: "Arlington, VA",
-        profilePic: "https://i.pravatar.cc/80?img=2",
+        profilePic: "./assets/Michael Roberts.jpg",
         rating: 5,
         feedback: "I appreciated how Jon handled every aspect of my case himself. It felt like I was his only client, even though I know he’s busy. Highly recommend!"
     },
     {
         name: "Emily Carter",
         location: "Norfolk, VA",
-        profilePic: "https://i.pravatar.cc/80?img=3",
+        profilePic: "./assets/Emily Carter.jpg",
         rating: 4,
         feedback: "Jon’s direct involvement and consistent communication gave me complete confidence in his services. He made a stressful situation much more manageable."
     },
     {
         name: "David Wilson",
         location: "Charlottesville, VA",
-        profilePic: "https://i.pravatar.cc/80?img=4",
+        profilePic: "./assets/David Wilson.jpg",
         rating: 5,
         feedback: "What stood out to me was how responsive Jon was. I never had to go through assistants or wait days for a response. He’s truly dedicated to his clients."
     }
