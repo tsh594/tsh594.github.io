@@ -88,7 +88,7 @@ class Chatbot {
 
 class FormManager {
     constructor() {
-        this.API_ENDPOINT = 'https://cors-anywhere.herokuapp.com/https://app.clio.com/inbox_leads.json';
+        this.API_ENDPOINT = 'https://app.clio.com/inbox_leads.json';
         this.API_KEY = 'YOUR_CLIO_API_KEY'; // REPLACE THIS
         this.init();
     }
@@ -139,20 +139,34 @@ class FormManager {
 
     cloneFieldGroup(selector, type) {
         const group = document.querySelector(selector);
-        const clone = group.firstElementChild.cloneNode(true);
-        
-        // Reset values
-        clone.querySelectorAll('input, select, textarea').forEach(field => {
-            if (field.type !== 'radio') field.value = '';
-            if (field.type === 'radio') field.checked = false;
+        const template = group.firstElementChild.cloneNode(true); // Clone the first row
+
+        // Reset values in the cloned row
+        template.querySelectorAll('input, select, textarea').forEach(field => {
+            if (field.type !== 'radio') field.value = ''; // Clear input values
+            if (field.type === 'radio') field.checked = false; // Uncheck radios
         });
 
-        // Add to DOM
-        group.appendChild(clone);
-        
-        // Reinitialize plugins
+        // Remove Chosen's duplicate dropdown
+        const chosenContainer = template.querySelector('.chosen-container');
+        if (chosenContainer) {
+            chosenContainer.remove(); // Remove the duplicate Chosen dropdown
+        }
+
+        // Add the new row to the group
+        group.appendChild(template);
+
+        // Reinitialize Chosen for the new select element
+        if (type === 'email' || type === 'phone' || type === 'address') {
+            $(template).find('select.chosen-select').chosen({
+                disable_search: true,
+                width: '100%'
+            });
+        }
+
+        // Reinitialize Cleave for phone fields
         if (type === 'phone') {
-            new Cleave(clone.querySelector('.phone-input'), {
+            new Cleave(template.querySelector('.phone-input'), {
                 phone: true,
                 phoneRegionCode: 'US',
                 delimiter: '-',
@@ -160,10 +174,6 @@ class FormManager {
                 numericOnly: true
             });
         }
-        $(clone).find('select.chosen-select').chosen({
-            disable_search: true,
-            width: '100%'
-        });
     }
 
     setupValidation() {
