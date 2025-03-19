@@ -202,6 +202,7 @@ body {
     transform: translateY(0);
   }
 }
+
 /* Services Section */
 .services {
   padding: 4rem 2rem;
@@ -330,8 +331,7 @@ body {
   transition: all 0.3s ease;
   visibility: hidden;
   z-index: 1001;
-  pointer-events: auto; /* Add this line */
-
+  pointer-events: auto;
 }
 
 .chatbot-container.active {
@@ -413,6 +413,7 @@ body {
       order: -1;
   }
 }
+
 /* Prevent click events on answer box from closing chatbot */
 .answer-box {
   pointer-events: none;
@@ -421,7 +422,6 @@ body {
 .question-btn {
   pointer-events: auto;
 }
-
 
 /* Client Feedback Section */
 .client-feedback {
@@ -531,7 +531,6 @@ body {
   color: var(--gold);
 }
 
-
 /* Case Inquiry Section */
 .case-inquiry {
   padding: 4rem 2rem;
@@ -539,11 +538,13 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 /* Ensure proper z-indexing */
 .case-inquiry h2 {
   position: relative;
   z-index: 2;
 }
+
 .inquiry-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -614,7 +615,6 @@ body {
   border-radius: 8px;
 }
 
-
 /* Add loading animation */
 .form-container {
   position: relative;
@@ -675,4 +675,104 @@ body {
   top: 1rem;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+/* Form Section */
+.form-section {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Dynamic Field Styling */
+.form-row {
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.form-row.primary-selected {
+  background: #f8f9fa;
+  border-left: 3px solid #2c3e50;
+  padding-left: 10px;
+}
+
+.add-email, .add-phone, .add-address {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.add-email:hover, .add-phone:hover, .add-address:hover {
+  text-decoration: underline;
+}
+
+.chosen-container {
+  width: 100% !important;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.form-control {
+  border: 2px solid var(--gray);
+  border-radius: 4px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+.required label::after {
+  content: " *";
+  color: #e74c3c;
+}
+
+.lex-button {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.lex-button:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* Error Messages */
+.error-message {
+  color: #dc3545;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* No-JS Warning */
+.no-js-warning {
+  display: none;
+  background: #ff0000;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.no-js .no-js-warning {
+  display: block;
 }

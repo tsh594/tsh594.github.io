@@ -1,14 +1,88 @@
 class Chatbot {
     constructor() {
-        this.chatbotToggle = document.querySelector('.chatbot-toggle');
-        this.chatbotContainer = document.querySelector('.chatbot-container');
+        this.faqs = [
+            { 
+                question: "What are your office hours?", 
+                answer: "Monday-Friday: 9AM - 5PM EST<br>Saturday: By appointment only" 
+            },
+            { 
+                question: "Do you offer free consultations?", 
+                answer: "We provide a 30-minute complimentary initial consultation" 
+            },
+            { 
+                question: "What payment methods do you accept?", 
+                answer: "We accept credit cards, checks, and wire transfers" 
+            },
+        ];
+        this.selectedQuestion = null;
+        this.isOpen = false;
         this.init();
     }
 
     init() {
-        this.chatbotToggle.addEventListener('click', () => {
-            this.chatbotContainer.classList.toggle('active');
+        this.container = document.querySelector('.chatbot-container');
+        this.toggleBtn = document.querySelector('.chatbot-toggle');
+        
+        this.toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleChatbot();
         });
+
+        document.addEventListener('click', (e) => {
+            if (!this.container.contains(e.target) && 
+                !e.target.classList.contains('chatbot-toggle')) {
+                this.closeChatbot();
+            }
+        });
+
+        this.container.addEventListener('click', (e) => {
+            const questionBtn = e.target.closest('.question-btn');
+            if (questionBtn) {
+                e.stopPropagation();
+                const index = parseInt(questionBtn.dataset.index);
+                this.handleQuestionClick(index);
+            }
+        });
+    }
+
+    toggleChatbot() {
+        this.isOpen = !this.isOpen;
+        this.container.classList.toggle('active');
+        if (this.isOpen) this.renderChatbot();
+    }
+
+    closeChatbot() {
+        this.isOpen = false;
+        this.container.classList.remove('active');
+    }
+
+    handleQuestionClick(index) {
+        this.selectedQuestion = this.selectedQuestion === index ? null : index;
+        this.renderChatbot();
+    }
+
+    renderChatbot() {
+        this.container.innerHTML = `
+            <div class="chatbot-header">
+                <i class="fas fa-comments"></i>
+                <h4>Client Assistance</h4>
+            </div>
+            <div class="questions-list">
+                ${this.faqs.map((faq, i) => `
+                    <button 
+                        class="question-btn ${this.selectedQuestion === i ? 'active' : ''}" 
+                        data-index="${i}"
+                    >
+                        ${faq.question}
+                    </button>
+                `).join('')}
+            </div>
+            ${this.selectedQuestion !== null ? `
+                <div class="answer-box">
+                    ${this.faqs[this.selectedQuestion].answer}
+                </div>
+            ` : ''}
+        `;
     }
 }
 
@@ -65,202 +139,53 @@ function renderFeedback() {
     `).join('');
 }
 
-class FormManager {
-    constructor() {
-        this.API_ENDPOINT = 'https://hayslawva-test.me/submit-form.php';        
-        this.API_KEY = '82d68da5d013ef36e1a8e76ec35d6fb6'; // Replace with your actual API key
-        this.init();
-    }
+// Form Submission Handler
+function setupFormListener() {
+    // Add loading state handling
+    const formContainer = document.querySelector('.form-container');
+    const iframe = document.getElementById('caseInquiryFrame');
 
-    init() {
-        this.setupDynamicFields();
-        this.setupValidation();
-        this.initializePlugins();
-        this.setupModal();
-    }
-
-    initializePlugins() {
-        // Initialize Chosen selects
-        $('select.chosen-select').chosen({
-            disable_search: true,
-            width: '100%'
-        });
-
-        // Initialize phone formatting
-        new Cleave('.phone-input', {
-            phone: true,
-            phoneRegionCode: 'US',
-            delimiter: '-',
-            prefix: '+1',
-            numericOnly: true
-        });
-    }
+    iframe.onload = () => {
+        formContainer.classList.remove('loading');
+    };
     
-    setupDynamicFields() {
-        // Email fields
-        document.querySelector('.add-email').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.cloneFieldGroup('.email-group', 'email');
-        });
-
-        // Phone fields
-        document.querySelector('.add-phone').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.cloneFieldGroup('.phone-group', 'phone');
-        });
-
-        // Address fields
-        document.querySelector('.add-address').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.cloneFieldGroup('.address-group', 'address');
-        });
-    }
-
-    cloneFieldGroup(selector, type) {
-        const group = document.querySelector(selector);
-        const template = group.firstElementChild.cloneNode(true);
-
-        // Reset values
-        template.querySelectorAll('input, select, textarea').forEach(field => {
-            if (field.type !== 'radio') field.value = '';
-            if (field.type === 'radio') field.checked = false;
-        });
-
-        // Reinitialize components
-        const chosenContainer = template.querySelector('.chosen-container');
-        if (chosenContainer) chosenContainer.remove();
-
-        const selectElement = template.querySelector('select');
-        if (selectElement) {
-            selectElement.classList.remove('chosen-select');
-            selectElement.style.display = 'block';
-        }
-
-        group.appendChild(template);
-
-        if (selectElement) {
-            $(selectElement).chosen({
-                disable_search: true,
-                width: '100%'
-            });
-        }
-
-        if (type === 'phone') {
-            new Cleave(template.querySelector('.phone-input'), {
-                phone: true,
-                phoneRegionCode: 'US',
-                delimiter: '-',
-                prefix: '+1',
-                numericOnly: true
-            });
-        }
-    }
-
-    setupValidation() {
-        document.getElementById('leadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await this.handleFormSubmit(e);
-        });
-    }
-
-    async handleFormSubmit(e) {
-        const form = e.target;
-        const errorContainer = form.querySelector('.error-messages');
-        errorContainer.innerHTML = '';
-
-        try {
-            const validation = this.validateForm(form);
-            if (!validation.isValid) {
-                throw new Error(validation.errors.join('<br>'));
+    // Show loading state initially
+    formContainer.classList.add('loading');
+    
+    const modal = document.getElementById('successModal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    // Listen for form submissions from iframes
+    window.addEventListener('message', (event) => {
+        if (event.origin === 'https://hayslawva.cliogrow.com') {
+            if (event.data === 'formSubmitted') {
+                modal.style.display = 'flex';
+                // Refresh iframe sources
+                document.querySelectorAll('iframe').forEach(iframe => {
+                    iframe.src = iframe.src;
+                });
             }
-
-            const payload = {
-                inbox_lead: {
-                    from_first: form.from_first.value,
-                    from_last: form.from_last.value,
-                    from_email: this.getPrimaryValue(form, 'default_email', 'from_email'),
-                    from_phone: this.getPrimaryValue(form, 'default_phone', 'from_phone'),
-                    from_message: form.from_message.value,
-                    custom_fields: {
-                        urgency_level: form.urgency_level.value,
-                        area_of_law: form.area_of_law.value,
-                        referral_source: form.referral_source.value
-                    }
-                },
-                inbox_lead_token: form.inbox_lead_token.value,
-                referring_url: form.referring_url.value,
-                from_source: form.from_source.value
-            };
-
-            const response = await fetch(this.API_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/vnd.clio-inbox-leads-v1+json',
-                    'Authorization': `Bearer ${this.API_KEY}`
-                },
-                body: JSON.stringify(payload)
-            });
-
-            const responseText = await response.text();
-            let responseData;
-            try {
-                responseData = JSON.parse(responseText);
-            } catch (error) {
-                throw new Error(`Invalid response: ${responseText}`);
-            }
-
-            if (!response.ok) {
-                throw new Error(responseData.error || `HTTP error ${response.status}`);
-            }
-
-            this.showSuccess();
-            form.reset();
-        } catch (error) {
-            errorContainer.innerHTML = `
-                <div class="error-message">
-                    Error: ${error.message}
-                </div>
-            `;
         }
-    }
+    });
 
-    validateForm(form) {
-        const errors = [];
-        if (!form.from_first.value.trim()) errors.push('First name required');
-        if (!form.from_last.value.trim()) errors.push('Last name required');
-        if (!form.from_message.value.trim()) errors.push('Case description required');
-        return { isValid: errors.length === 0, errors };
-    }
+    // Close modal handlers
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
 
-    getPrimaryValue(form, radioName, fieldName) {
-        const primaryRow = form.querySelector(`[name="${radioName}"]:checked`).closest('.form-row');
-        return primaryRow.querySelector(`[name="${fieldName}"]`).value;
-    }
-
-    showSuccess() {
-        const modal = document.getElementById('successModal');
-        modal.style.display = 'flex';
-        setTimeout(() => modal.style.display = 'none', 3000);
-    }
-
-    setupModal() {
-        document.querySelector('.close-modal').addEventListener('click', () => {
-            document.getElementById('successModal').style.display = 'none';
-        });
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('successModal')) {
-                document.getElementById('successModal').style.display = 'none';
-            }
-        });
-    }
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 }
 
-// Initialize
+// Initialize chatbot when window loads
+// Initialize when DOM is ready
+// Initialize when DOM loads
+// Initialize everything when DOM loads
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.remove('no-js');
     new Chatbot();
-    new FormManager();
     renderFeedback();
+    setupFormListener();
 });
