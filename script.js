@@ -95,7 +95,7 @@ class FormManager {
             numericOnly: true
         });
     }
-
+    
     setupDynamicFields() {
         // Email fields
         document.querySelector('.add-email').addEventListener('click', (e) => {
@@ -118,39 +118,33 @@ class FormManager {
 
     cloneFieldGroup(selector, type) {
         const group = document.querySelector(selector);
-        const template = group.firstElementChild.cloneNode(true); // Clone the first row
+        const template = group.firstElementChild.cloneNode(true);
 
-        // Reset values in the cloned row
+        // Reset values
         template.querySelectorAll('input, select, textarea').forEach(field => {
-            if (field.type !== 'radio') field.value = ''; // Clear input values
-            if (field.type === 'radio') field.checked = false; // Uncheck radios
+            if (field.type !== 'radio') field.value = '';
+            if (field.type === 'radio') field.checked = false;
         });
 
-        // Remove Chosen's duplicate dropdown (if it exists)
+        // Reinitialize components
         const chosenContainer = template.querySelector('.chosen-container');
-        if (chosenContainer) {
-            chosenContainer.remove(); // Remove the duplicate Chosen dropdown
-        }
+        if (chosenContainer) chosenContainer.remove();
 
-        // Remove the Chosen class from the select element
-        const selectElement = template.querySelector('select.chosen-select');
+        const selectElement = template.querySelector('select');
         if (selectElement) {
-            selectElement.classList.remove('chosen-select'); // Remove the Chosen class
-            selectElement.style.display = 'block'; // Ensure the original select is visible
+            selectElement.classList.remove('chosen-select');
+            selectElement.style.display = 'block';
         }
 
-        // Add the new row to the group
         group.appendChild(template);
 
-        // Reinitialize Chosen for the new select element
-        if (type === 'email' || type === 'phone' || type === 'address') {
-            $(template).find('select').chosen({
+        if (selectElement) {
+            $(selectElement).chosen({
                 disable_search: true,
                 width: '100%'
             });
         }
 
-        // Reinitialize Cleave for phone fields
         if (type === 'phone') {
             new Cleave(template.querySelector('.phone-input'), {
                 phone: true,
@@ -175,13 +169,11 @@ class FormManager {
         errorContainer.innerHTML = '';
 
         try {
-            // Validate form
             const validation = this.validateForm(form);
             if (!validation.isValid) {
                 throw new Error(validation.errors.join('<br>'));
             }
 
-            // Build payload
             const payload = {
                 inbox_lead: {
                     from_first: form.from_first.value,
@@ -200,7 +192,6 @@ class FormManager {
                 from_source: form.from_source.value
             };
 
-            // Submit to Clio via CORS proxy
             const response = await fetch(this.API_ENDPOINT, {
                 method: 'POST',
                 headers: {
@@ -211,28 +202,24 @@ class FormManager {
                 body: JSON.stringify(payload)
             });
 
-            // Handle non-JSON responses
             const responseText = await response.text();
             let responseData;
             try {
                 responseData = JSON.parse(responseText);
             } catch (error) {
-                throw new Error(`Invalid response from server: ${responseText}`);
+                throw new Error(`Invalid response: ${responseText}`);
             }
 
-            // Handle response
             if (!response.ok) {
                 throw new Error(responseData.error || `HTTP error ${response.status}`);
             }
 
-            // Show success message
             this.showSuccess();
             form.reset();
         } catch (error) {
-            console.error('Submission error:', error);
             errorContainer.innerHTML = `
                 <div class="error-message">
-                    Submission failed: ${error.message}
+                    Error: ${error.message}
                 </div>
             `;
         }
@@ -240,24 +227,10 @@ class FormManager {
 
     validateForm(form) {
         const errors = [];
-        
-        // Required fields
-        if (!form.from_first.value.trim()) errors.push('First name is required');
-        if (!form.from_last.value.trim()) errors.push('Last name is required');
-        if (!form.from_message.value.trim()) errors.push('Case description is required');
-        
-        // Primary selections
-        if (!form.querySelector('[name="default_email"]:checked')) {
-            errors.push('Please select a primary email');
-        }
-        if (!form.querySelector('[name="default_phone"]:checked')) {
-            errors.push('Please select a primary phone number');
-        }
-
-        return {
-            isValid: errors.length === 0,
-            errors
-        };
+        if (!form.from_first.value.trim()) errors.push('First name required');
+        if (!form.from_last.value.trim()) errors.push('Last name required');
+        if (!form.from_message.value.trim()) errors.push('Case description required');
+        return { isValid: errors.length === 0, errors };
     }
 
     getPrimaryValue(form, radioName, fieldName) {
@@ -268,9 +241,7 @@ class FormManager {
     showSuccess() {
         const modal = document.getElementById('successModal');
         modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 3000);
+        setTimeout(() => modal.style.display = 'none', 3000);
     }
 
     setupModal() {
@@ -286,15 +257,10 @@ class FormManager {
     }
 }
 
-// Main Initialization
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    // Remove no-js class
     document.body.classList.remove('no-js');
-
-    // Initialize components
     new Chatbot();
     new FormManager();
-
-    // Add this line to render feedback cards
-    renderFeedback(); // 👈 This was missing
+    renderFeedback();
 });
