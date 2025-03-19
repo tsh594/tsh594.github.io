@@ -1,4 +1,4 @@
-<?php
+<!-- ?php
 // submit-form.php
 
 // Enable error reporting for debugging
@@ -113,4 +113,4 @@ if ($httpCode === 200) {
     error_log('Form submission failed. HTTP code: ' . $httpCode);
     echo json_encode(['success' => false, 'message' => 'Form submission failed. HTTP code: ' . $httpCode]);
 }
-?>
+?> -->

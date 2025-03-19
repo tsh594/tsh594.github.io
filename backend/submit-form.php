@@ -1,4 +1,4 @@
-<?php
+<!-- ?php
 // submit-form.php
 
 header('Content-Type: application/json');
@@ -80,4 +80,4 @@ if ($httpCode >= 200 && $httpCode < 300) {
         'success' => false,
         'message' => 'API error: ' . $response
     ]);
-}
+} -->
