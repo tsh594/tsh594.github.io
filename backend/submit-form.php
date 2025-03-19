@@ -61,11 +61,11 @@ $url = 'https://app.clio.com/inbox_leads.json';
 $headers = [
     'Content-Type: application/json',
     'Accept: application/vnd.clio-inbox-leads-v1+json',
-    'Authorization: Bearer ' . getenv('CLIO_API_KEY') // Use environment variable for API key
+    'Authorization: Bearer ' . $_ENV['CLIO_API_KEY'] // Use environment variable for API key
 ];
 
-// Log the API endpoint and headers
-error_log('API endpoint: ' . $url);
+// Log the environment variable and headers
+error_log('CLIO_API_KEY: ' . $_ENV['CLIO_API_KEY']);
 error_log('Headers: ' . print_r($headers, true));
 
 // Initialize cURL session
