@@ -94,9 +94,16 @@ $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 // Close the cURL session
 curl_close($ch);
 
-// Log the response and HTTP status code
-error_log('HTTP status code: ' . $httpCode);
-error_log('API response: ' . $response);
+// Log the raw response
+error_log('Raw API response: ' . $response);
+
+// Check if the response is valid JSON
+$responseData = json_decode($response, true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    error_log('Invalid JSON response: ' . $response);
+    echo json_encode(['success' => false, 'message' => 'Invalid JSON response from server.']);
+    exit;
+}
 
 // Handle the response
 if ($httpCode === 200) {
