@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+      content="frame-src https://hayslawva.cliogrow.com https://account.clio.com https://app.clio.com;
+              script-src 'self' https://cdnjs.cloudflare.com;
+              style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+              img-src 'self' data: https://i.pravatar.cc;">
+    <title>Jon F. Hays Law Firm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=4">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <!-- Logo Section -->
+    <header class="logo-header">
+        <div class="logo-container">
+            <img src="./assets/Logo.webp" class="logo" alt="Law Firm Logo">
+            <div class="logo-text">
+                <span class="logo-name">Jon F. Hays</span>
+                <span class="logo-tagline">Law Firm</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="mobile-menu" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#practice-areas">Practice Areas <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+                    <div class="dropdown-content">
+                        <a href="estate-planning.html">Estate Planning</a>
+                        <a href="family-law.html">Family Law</a>
+                        <a href="criminal-law.html">Criminal Law</a>
+                    </div>
+                </li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589" target="_blank" rel="noopener noreferrer">New Client Form</a></li> 
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <!-- Hero Section with Video + Image Background -->
+    <section class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="./videos/flowing-metal.mp4" type="video/mp4">
+            <source src="./assets/hero-video.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-image-overlay"></div>
+        <div class="hero-content">
+            <h1>Jon F. Hays Law Firm</h1>
+            <p class="tagline">Trusted Legal Counsel Since 2013</p>
+        </div>
+    </section>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="section-header">
+        <h2>Practice Areas</h2>
+        <div class="gold-divider"></div>
+    </div>
+    
+    <div class="services-grid">
+        <!-- Estate Planning -->
+        <div class="service-card">
+            <div class="image-container">
+                <img src="./assets/wills.jpg" 
+                    alt="Estate planning documents" class="service-image">
+                <div class="image-overlay"></div>
+            </div>
+            <div class="service-content">
+                <h3>Estate Planning</h3>
+                <p>Comprehensive protection including wills, trusts, and probate administration</p>
+                <a href="estate-planning.html" class="learn-more-btn">
+                    Learn More <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Family Law -->
+        <div class="service-card">
+            <div class="image-container">
+                <img src="./assets/Happy-Family.jpg" 
+                    alt="Happy family" class="service-image">
+                <div class="image-overlay"></div>
+            </div>
+            <div class="service-content">
+                <h3>Family Law</h3>
+                <p>Guidance through divorce, child custody, and support matters</p>
+                <a href="family-law.html" class="learn-more-btn">
+                    Learn More <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Criminal Law -->
+        <div class="service-card">
+            <div class="image-container">
+                <img src="./assets/criminal.jpg" 
+                    alt="Courtroom gavel" class="service-image">
+                <div class="image-overlay"></div>
+            </div>
+            <div class="service-content">
+                <h3>Criminal Law</h3>
+                <p>Defense for traffic violations, DUIs, and minor criminal offenses</p>
+                <a href="criminal-law.html" class="learn-more-btn">
+                    Learn More <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    <!-- Client Feedback Section -->
+    <section class="client-feedback">
+        <h2>What Our Clients Say</h2>
+        <div class="feedback-grid">
+            <!-- Injected by JS -->
+        </div>
+    </section>
+
+    <!-- Case Inquiry Section -->
+    <section class="case-inquiry">
+        <div class="case-intake-container">
+            <h2>Submit Case Information</h2>
+            
+            <div class="intake-grid">
+                <!-- Form Information Section -->
+                <div class="intake-info">
+                    <h3><i class="fas fa-lock"></i> Confidential Case Review</h3>
+                    <p class="intro-text">Use our secure form to begin your case evaluation:</p>
+                    
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-shield-alt"></i> Submit case details privately</li>
+                        <li><i class="fas fa-question-circle"></i> Ask preliminary questions</li>
+                        <li><i class="fas fa-phone-volume"></i> Request call back</li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Information Section -->
+                <div class="contact-card">
+                    <h3><i class="fas fa-envelope"></i> Email</h3>
+                    <div class="contact-method">
+                        <i class="fas fa-user-tie"></i>
+                        <a href="mailto:jon.hays@hayslawva.com">jon.hays@hayslawva.com</a>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-info-circle"></i>
+                        <a href="mailto:info@hayslawva.com">info@hayslawva.com</a>
+                    </div>
+                    
+                    <h3><i class="fas fa-map-marker-alt"></i> Office</h3>
+                    <div class="contact-method">
+                        <i class="fas fa-building"></i>
+                        <address>
+                            40582 Sculpin Court<br>
+                            Aldie, VA 20105
+                        </address>
+                    </div>
+                    
+<!--                     <div class="phone-contact">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:571-781-2460">(571) 781-2460</a>
+                    </div> -->
+                </div>
+            </div>
+            <div class="form-container">
+                <div class="form-loading">
+                    <div class="form-spinner">
+                        <i class="fas fa-file-contract"></i>
+                        <div class="spinner"></div>
+                    </div>
+                    <a href="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589" class="form-fallback-button">
+                        <i class="fas fa-external-link-alt"></i> Open Form in New Window
+                    </a>
+                </div>
+                <object 
+                    data="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589"
+                    type="text/html"
+                    class="clio-form-iframe"
+                    aria-label="Secure case intake form">
+                </object>
+            </div>
+        </div>
+    </section>
+
+    <!-- Book Appointment Section -->
+    <section class="book-appointment">
+        <div class="appointment-container">
+            <h2><i class="fas fa-calendar-alt"></i> Available Consultations</h2>
+            
+            <div class="appointment-grid">
+                <!-- Office Hours Card -->
+                <div class="appointment-card">
+                    <div class="card-header">
+                        <i class="fas fa-building"></i>
+                        <h3>Office Hours</h3>
+                    </div>
+                    <ul class="hours-list">
+                        <li>
+                            <span class="day-icon"><i class="fas fa-clock"></i></span>
+                            <span class="day-range">Monday - Friday</span>
+                            <span class="hours">9:00 AM - 5:00 PM</span>
+                        </li>
+                        <li>
+                            <span class="day-icon"><i class="fas fa-calendar-check"></i></span>
+                            <span class="day-range">Saturday</span>
+                            <span class="hours">By Appointment</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Appointment Features Card -->
+                <div class="features-card">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Confidential</h4>
+                            <p>All consultations are completely private</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Virtual Meetings</h4>
+                            <p>Available via Zoom or phone</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-hourglass"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Cancellation Policy</h4>
+                            <p>24-hour notice required</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+<!--             <div class="emergency-notice">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>For urgent legal matters, please call <a href="tel:571-781-2460">(571) 781-2460</a> directly</p>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close modal">&times;</span>
+            <i class="fas fa-check-circle success-icon" aria-hidden="true"></i>
+            <h3>Submission Received!</h3>
+            <p>We'll respond within 1 business day.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Jon F. Hays Law Firm. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/HaysLawVa/" aria-label="Facebook profile"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter profile"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/jonhays/" aria-label="LinkedIn profile"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="floating-chatbot">
+        <button class="chatbot-toggle" aria-label="Open chat interface">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chatbot-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

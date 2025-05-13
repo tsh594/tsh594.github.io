@@ -1,0 +1,12 @@
+For any image:
+https://picsum.photos/80/80?random=1
+
+
+For Avatars:
+https://i.pravatar.cc/80?img=1
+
+
+Submission failed: HTTP error! status: 405
+
+
+JavaScript is required to use this website. Please enable JavaScript in your browser.

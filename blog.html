@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Insights | Jon F. Hays Law Firm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="blog.css?v=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <!-- Logo Section -->
+    <header class="logo-header">
+        <div class="logo-container">
+            <img src="./assets/Logo.webp" class="logo" alt="Law Firm Logo">
+            <div class="logo-text">
+                <span class="logo-name">Jon F. Hays</span>
+                <span class="logo-tagline">Law Firm</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="mobile-menu" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#practice-areas">Practice Areas <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+                    <div class="dropdown-content">
+                        <a href="estate-planning.html">Estate Planning</a>
+                        <a href="family-law.html">Family Law</a>
+                        <a href="criminal-law.html">Criminal Law</a>
+                    </div>
+                </li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589" target="_blank" rel="noopener noreferrer">New Client Form</a></li> 
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+   <section class="hero blog-hero">
+        <!-- Video Background -->
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="./assets/family-video.webm" type="video/webm">
+            <source src="./videos/flowing-metal.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <!-- Image Overlay -->
+        <div class="hero-image-overlay"></div>
+        
+        <!-- Content -->
+        <div class="hero-content">
+            <h1>Legal Insights</h1>
+            <p class="tagline">Practical advice on estate planning, family law, and criminal defense</p>
+        </div>
+    </section>
+
+    <!-- Blog Content Section -->
+    <section class="blog-container">
+        <!-- Blog Admin Panel (Visible only to Jon when logged in) -->
+        <div class="blog-admin-panel" id="adminPanel">
+            <h3><i class="fas fa-lock"></i> Blog Management</h3>
+            <div class="admin-actions">
+                <button id="newPostBtn" class="admin-btn">
+                    <i class="fas fa-plus"></i> New Post
+                </button>
+                <button id="editPostBtn" class="admin-btn">
+                    <i class="fas fa-edit"></i> Edit Post
+                </button>
+                <button id="saveChangesBtn" class="admin-btn">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+
+        <!-- Blog Editor (Hidden by default) -->
+        <div class="blog-editor" id="blogEditor">
+            <h2>Create/Edit Blog Post</h2>
+            <div class="editor-form">
+                <div class="form-group">
+                    <label for="postTitle">Title:</label>
+                    <input type="text" id="postTitle" placeholder="Enter post title">
+                </div>
+                <div class="form-group">
+                    <label for="postDate">Date:</label>
+                    <input type="date" id="postDate">
+                </div>
+                <div class="form-group">
+                    <label for="postCategory">Category:</label>
+                    <select id="postCategory">
+                        <option value="estate-planning">Estate Planning</option>
+                        <option value="family-law">Family Law</option>
+                        <option value="criminal-law">Criminal Law</option>
+                        <option value="legal-news">Legal News</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="postImage">Featured Image URL:</label>
+                    <input type="text" id="postImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Content:</label>
+                    <textarea id="postContent" rows="10" placeholder="Write your blog post here..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button id="publishPostBtn" class="editor-btn primary">
+                        <i class="fas fa-upload"></i> Publish Post
+                    </button>
+                    <button id="cancelEditBtn" class="editor-btn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="blog-posts" id="blogPosts">
+            <!-- Blog Post 1 -->
+            <article class="blog-post" data-id="1" data-category="estate-planning">
+                <div class="post-header">
+                    <div class="post-meta">
+                        <span class="post-category">Estate Planning</span>
+                        <span class="post-date">May 15, 2025</span>
+                    </div>
+                    <h2 class="post-title">Understanding Living Trusts in Virginia</h2>
+                    <div class="post-image">
+                        <img src="./assets/estate-planning-blog.jpg" alt="Living Trusts">
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Living trusts are becoming an increasingly popular estate planning tool for Virginia residents. Unlike a will, a living trust allows your assets to bypass probate, which can save your family time and money...</p>
+                    <a href="estate-planning-blog.html" class="read-more">Continue Reading <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article class="blog-post" data-id="2" data-category="family-law">
+                <div class="post-header">
+                    <div class="post-meta">
+                        <span class="post-category">Family Law</span>
+                        <span class="post-date">May 22, 2025</span>
+                    </div>
+                    <h2 class="post-title">Child Custody Modifications: What You Need to Know</h2>
+                    <div class="post-image">
+                        <img src="./assets/child-custody.jpg" alt="Child Custody">
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Life circumstances change, and sometimes child custody arrangements need to change too. In Virginia, either parent can petition the court for a custody modification if there's been a material change in circumstances...</p>
+                    <a href="family-law-blog.html" class="read-more">Continue Reading <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </article>
+
+            <!-- Blog Post 3 -->
+            <article class="blog-post" data-id="3" data-category="criminal-law">
+                <div class="post-header">
+                    <div class="post-meta">
+                        <span class="post-category">Criminal Law</span>
+                        <span class="post-date">April 10, 2025</span>
+                    </div>
+                    <h2 class="post-title">Virginia's New DUI Laws in 2023</h2>
+                    <div class="post-image">
+                        <img src="./assets/DUI.jpg" alt="DUI Laws">
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Virginia has implemented several changes to its DUI laws this year that every driver should be aware of. The most significant change is the reduction of the BAC threshold for enhanced penalties from 0.15% to 0.11%...</p>
+                    <a href="criminal-law-blog.html" class="read-more">Continue Reading <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Blog Sidebar -->
+        <aside class="blog-sidebar">
+            <div class="sidebar-widget">
+                <h3>Categories</h3>
+                <ul class="category-list">
+                    <li><a href="#" data-category="all">All Posts</a></li>
+                    <li><a href="#" data-category="estate-planning">Estate Planning</a></li>
+                    <li><a href="#" data-category="family-law">Family Law</a></li>
+                    <li><a href="#" data-category="criminal-law">Criminal Law</a></li>
+                    <li><a href="#" data-category="legal-news">Legal News</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-widget">
+                <h3>Recent Posts</h3>
+                <ul class="recent-posts">
+                    <li><a href="living-trusts.html">Understanding Living Trusts in Virginia</a></li>
+                    <li><a href="child-custody.html">Child Custody Modifications</a></li>
+                    <li><a href="dui-laws.html">Virginia's New DUI Laws in 2025</a></li>
+                </ul>
+            </div>
+        </aside>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-container">
+            <div class="newsletter-text">
+                <h2>Stay Informed</h2>
+<!--                 <p>Subscribe to our monthly newsletter for legal updates and insights.</p>
+ -->            </div>
+<!--             <form class="newsletter-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email" required>
+                <button type="submit">Subscribe <i class="fas fa-envelope"></i></button>
+            </form> -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Jon F. Hays Law Firm. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/HaysLawVa/" aria-label="Facebook profile"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter profile"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/jonhays/" aria-label="LinkedIn profile"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="floating-chatbot">
+        <button class="chatbot-toggle" aria-label="Open chat interface">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chatbot-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="blog-admin.js"></script>
+</body>
+</html>
