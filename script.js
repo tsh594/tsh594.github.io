@@ -499,3 +499,188 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
+
+// Chatbot Implementation
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbotToggle = document.querySelector('.chatbot-toggle');
+    const chatbotContainer = document.querySelector('.chatbot-container');
+    const chatbotClose = document.querySelector('.chatbot-close');
+    const chatInput = document.querySelector('.chatbot-input textarea');
+    const sendButton = document.querySelector('.send-button');
+    const chatMessages = document.querySelector('.chatbot-messages');
+    const notificationBadge = document.querySelector('.notification-badge');
+    
+    let isChatOpen = false;
+    let unreadMessages = 0;
+    
+    // Toggle chat visibility
+    chatbotToggle.addEventListener('click', function() {
+        isChatOpen = !isChatOpen;
+        if (isChatOpen) {
+            chatbotContainer.classList.remove('hidden');
+            unreadMessages = 0;
+            updateNotificationBadge();
+        }
+    });
+    
+    chatbotClose.addEventListener('click', function() {
+        chatbotContainer.classList.add('hidden');
+        isChatOpen = false;
+    });
+    
+    // Auto-resize textarea
+    chatInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+    
+    // Send message on Enter (but allow Shift+Enter for new line)
+    chatInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    sendButton.addEventListener('click', sendMessage);
+    
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message === '') return;
+        
+        // Add user message to chat
+        addMessage(message, 'user');
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        
+        // Show typing indicator
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'typing-indicator bot-message';
+        typingIndicator.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+        chatMessages.appendChild(typingIndicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Call Ollama API
+        fetchOllamaResponse(message).then(response => {
+            // Remove typing indicator
+            chatMessages.removeChild(typingIndicator);
+            
+            // Add bot response
+            addMessage(response, 'bot');
+            
+            // Update notification if chat is closed
+            if (!isChatOpen) {
+                unreadMessages++;
+                updateNotificationBadge();
+            }
+        }).catch(error => {
+            chatMessages.removeChild(typingIndicator);
+            addMessage("I'm having trouble connecting to the legal assistant. Please try again later or contact us directly.", 'bot');
+            console.error('Error:', error);
+        });
+    }
+    
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = text;
+        
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function updateNotificationBadge() {
+        if (unreadMessages > 0) {
+            notificationBadge.classList.remove('hidden');
+            notificationBadge.textContent = unreadMessages;
+        } else {
+            notificationBadge.classList.add('hidden');
+        }
+    }
+    
+    // Ollama API call
+    async function fetchOllamaResponse(prompt) {
+        // IMPORTANT: This requires Ollama to be running locally on http://localhost:11434
+        try {
+            const response = await fetch('http://localhost:11434/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: 'llama3', // or 'mistral' or other model you have installed
+                    prompt: `You are a professional legal assistant for a law firm. Provide helpful but cautious responses to legal questions, always reminding users to consult with an actual attorney for legal advice. The firm practices in estate planning, family law, and simple criminal law. Be concise and professional in your responses. Question: ${prompt}`,
+                    stream: false
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            const data = await response.json();
+            return data.response;
+        } catch (error) {
+            console.error('Error calling Ollama:', error);
+            throw error;
+        }
+    }
+});
+
+// toggle hamburger menu
+// Mobile menu toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.querySelector('.mobile-menu');
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelector('.nav-links');
+
+    mobileMenuButton.addEventListener('click', function() {
+        // Toggle the 'active' class on the navbar
+        navbar.classList.toggle('active');
+        
+        // For accessibility - toggle aria-expanded attribute
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        
+        // Toggle between hamburger and close icon
+        const icon = this.querySelector('i');
+        if (icon.classList.contains('fa-bars')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
+
+    // Close menu when clicking on a nav link (optional)
+    navLinks.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') {
+            navbar.classList.remove('active');
+            mobileMenuButton.querySelector('i').classList.remove('fa-times');
+            mobileMenuButton.querySelector('i').classList.add('fa-bars');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const navbar = document.querySelector('.navbar');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  if (mobileMenu && navbar) {
+    mobileMenu.addEventListener('click', function() {
+      navbar.classList.toggle('active');
+    });
+  }
+});

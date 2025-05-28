@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    <meta http-equiv="Content-Security-Policy" 
       content="frame-src https://hayslawva.cliogrow.com https://account.clio.com https://app.clio.com;
               script-src 'self' https://cdnjs.cloudflare.com;
               style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
@@ -11,7 +10,8 @@
     <title>Jon F. Hays Law Firm</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=4">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <!-- Add this after your main stylesheet link -->
+    <link rel="stylesheet" href="mobile.css">    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 </head>
@@ -29,27 +29,31 @@
 
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
-            <button class="mobile-menu" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="#practice-areas">Practice Areas <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
-                    <div class="dropdown-content">
-                        <a href="estate-planning.html">Estate Planning</a>
-                        <a href="family-law.html">Family Law</a>
-                        <a href="criminal-law.html">Criminal Law</a>
-                    </div>
-                </li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="blog.html" class="active">Blog</a></li>
-                <li><a href="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589" target="_blank" rel="noopener noreferrer">New Client Form</a></li> 
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
+  <div class="nav-container">
+    <button class="mobile-menu" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li class="dropdown">
+        <a href="#practice-areas">Practice Areas <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+        <div class="dropdown-content">
+          <a href="estate-planning.html">Estate Planning</a>
+          <a href="family-law.html">Family Law</a>
+          <a href="criminal-law.html">Criminal Law</a>
         </div>
-    </nav>
+      </li>
+      <li><a href="testimonials.html">Testimonials</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li>
+        <a href="https://hayslawva.cliogrow.com/intake/85ad90e6343d4e5162daf8b894a13589" target="_blank" rel="noopener noreferrer">
+          New Client Form
+        </a>
+      </li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
     <!-- Hero Section -->
     <!-- Hero Section with Video + Image Background -->
     <section class="hero">
@@ -132,9 +136,9 @@
     </section>
 
     <!-- Case Inquiry Section -->
-    <section class="case-inquiry">
+    <section class="case-inquiry" aria-labelledby="case-inquiry-title">
         <div class="case-intake-container">
-            <h2>Submit Case Information</h2>
+            <h2 id="case-inquiry-title">Submit Case Information</h2>
             
             <div class="intake-grid">
                 <!-- Form Information Section -->
@@ -199,7 +203,10 @@
     <!-- Book Appointment Section -->
     <section class="book-appointment">
         <div class="appointment-container">
-            <h2><i class="fas fa-calendar-alt"></i> Available Consultations</h2>
+            <h2 class="section-title">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Available Consultations</span>
+            </h2>
             
             <div class="appointment-grid">
                 <!-- Office Hours Card -->
@@ -286,12 +293,43 @@
     </footer>
 
     <!-- Chatbot -->
-    <div class="floating-chatbot">
-        <button class="chatbot-toggle" aria-label="Open chat interface">
-            <i class="fas fa-comments"></i>
-        </button>
-        <div class="chatbot-container"></div>
+<!-- Chatbot Container -->
+<div class="floating-chatbot">
+    <button class="chatbot-toggle" aria-label="Open chat interface">
+        <i class="fas fa-comments"></i>
+        <span class="notification-badge hidden">1</span>
+    </button>
+    <div class="chatbot-container hidden">
+        <div class="chatbot-header">
+            <img src="./assets/chatbot-avatar.png" alt="Legal Assistant AI" class="chatbot-avatar">
+            <h3>Legal Assistant</h3>
+            <button class="chatbot-close" aria-label="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chatbot-messages">
+            <div class="chatbot-welcome">
+                <p>Hello, I'm your AI legal assistant. I can help with:</p>
+                <ul>
+                    <li>General legal questions</li>
+                    <li>Practice area information</li>
+                    <li>Appointment scheduling</li>
+                    <li>Document guidance</li>
+                </ul>
+                <p class="disclaimer">Note: I don't provide legal advice - always consult an attorney for your specific situation.</p>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <textarea placeholder="Type your question..." rows="1"></textarea>
+            <button class="send-button" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="chatbot-footer">
+            <small>Powered by Ollama AI | <a href="#" class="privacy-link">Privacy Policy</a></small>
+        </div>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>
